@@ -9,14 +9,16 @@ description: A股个股深度研究全流程——数据收集、来源验证、
 
 ```
 [stock-report]          ← 你在这里，负责编排全流程
-    ├── research-triangulation   数据来源验证
-    ├── analytical-rigor         分析严谨性检查
-    ├── council                  四视角独立辩论
+    ├── market-research          行业竞争格局（Step 1.2）
+    ├── research-triangulation   数据来源验证（Step 1.5）
+    ├── analytical-rigor         分析严谨性检查（Step 2.5）
+    ├── council                  四视角独立辩论（Step 3）
     └── HTML生成 + Git推送
 ```
 
-**所有技能必须安装**（见 analysis-skills 仓库）：
-`research-triangulation` · `analytical-rigor` · `council`（ECC内置）
+**所有技能必须安装**：
+`research-triangulation` · `analytical-rigor`（见 analysis-skills 仓库）
+`market-research` · `council`（ECC内置）
 
 ---
 
@@ -90,6 +92,37 @@ configured_at: {日期}
 | 近期主力资金流向 | 最近3-5个交易日 |
 | 主要财务风险项 | 应收/负债/减值等 |
 | 同行退市/ST案例 | 用于幸存者偏误校正 |
+| 行业TOP3-5竞争对手 | 各自市占率或核心优势（Step 1.2 产出）|
+| 行业TAM及近3年CAGR | 行业复合增速（Step 1.2 产出）|
+| 目标公司竞争定位 | 护城河强度（强/中/弱）及最大竞争威胁（Step 1.2 产出）|
+
+---
+
+## Step 1.2：行业竞争格局（调用 market-research）
+
+**在此处调用 `market-research` 技能**，使用**竞争分析模式**，传入以下内容：
+
+```
+行业：{根据股票名称推断，如「医疗健康」「新能源」「消费白酒」}
+目标公司：{股票名称} {代码}
+研究模式：竞争分析 + 市场规模
+
+需要输出：
+1. 行业TOP3-5竞争对手及各自核心优势/市占率
+2. 行业规模（TAM）及近3年复合增速（CAGR）
+3. 行业集中度趋势（CR3/CR5）：集中化 / 分散化 / 稳定
+4. 目标公司相对定位：护城河宽度（强/中/弱）+ 最大竞争威胁
+5. 近12个月行业关键政策或监管变化及方向
+
+找不到的标注「暂无公开数据」，禁止捏造。
+```
+
+**market-research 产出用于：**
+- Step 2 多头论证：护城河宽 → 潜在竞争壁垒
+- Step 2 空头论证：市占率下滑 / 竞争加剧 → 下行压力
+- Step 2 估值模型：行业CAGR决定基准成长假设
+- Step 3 Council 输入：补充竞争格局上下文
+- HTML 第1页：公司全景中的竞争格局列
 
 ---
 
@@ -174,6 +207,8 @@ configured_at: {日期}
 - 机构评级：{分布}
 - 关键假设：{analytical-rigor 识别的最关键假设}
 - 幸存者偏误校正后基准概率：{修正结果}
+- 行业集中度趋势：{market-research 产出：集中化/分散化/稳定}
+- 最大竞争威胁：{market-research 识别的TOP1竞争对手及威胁}
 - 已识别的主要风险：{top 3}
 ```
 
@@ -256,6 +291,9 @@ git -C "{config.repo_path}" push origin main
 
 **输出前必须全部通过：**
 
+- [ ] market-research：行业TOP3竞争对手已识别，来源可引用
+- [ ] market-research：行业CAGR有数据支撑，用于基准成长假设
+- [ ] market-research：护城河评估已纳入多头或空头论证
 - [ ] research-triangulation：核心数据均有 ≥2 个独立来源
 - [ ] research-triangulation：无 L6 来源支撑结论
 - [ ] analytical-rigor：幸存者偏误已用退市案例校正
